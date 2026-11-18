@@ -5,8 +5,9 @@ const { Pool } = require('pg');
 const DATA_DIR = process.env.INTERVUE_DATA_DIR || path.join(__dirname, '..', 'data');
 const INTERVIEWS_PATH = path.join(DATA_DIR, 'interviews.json');
 const USERS_PATH = path.join(DATA_DIR, 'users.json');
-const pool = process.env.DATABASE_URL
-  ? new Pool({ connectionString: process.env.DATABASE_URL, ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : undefined })
+const databaseUrl = process.env.DATABASE_URL || process.env.DATABASE_POSTGRES_URL || process.env.POSTGRES_URL;
+const pool = databaseUrl
+  ? new Pool({ connectionString: databaseUrl, ssl: process.env.DATABASE_SSL === 'true' ? { rejectUnauthorized: false } : undefined })
   : null;
 let users = [];
 let fileQueue = Promise.resolve();

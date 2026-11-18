@@ -51,6 +51,8 @@ Import this repository as one Vercel project from its root. The root `vercel.jso
 
 Connect a Postgres provider through the Vercel Marketplace (for example, Neon). Set `GEMINI_API_KEY` and a random `JWT_SECRET` of at least 32 characters in the project environment. Let the database integration provide `DATABASE_URL`; set `DATABASE_SSL=true` only if the provider requires it. Check provider billing and storage-retention terms before creating the database.
 
+The Neon integration names its pooled connection string `DATABASE_POSTGRES_URL`; the API also accepts this name and the standard `DATABASE_URL`/`POSTGRES_URL` names.
+
 The repository also includes a Render Blueprint in `render.yaml` and a Docker Compose setup for local deployment.
 
 Never commit `.env` files or API keys. Before a public launch, also configure custom domains/HTTPS, backups and data-retention policy for resumes and interview answers.

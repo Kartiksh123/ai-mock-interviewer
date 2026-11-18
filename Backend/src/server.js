@@ -50,7 +50,9 @@ async function ensureInitialized() {
   if (!initialization) {
     initialization = (async () => {
       if (process.env.NODE_ENV === 'production') {
-        if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is required in production.');
+        if (!(process.env.DATABASE_URL || process.env.DATABASE_POSTGRES_URL || process.env.POSTGRES_URL)) {
+          throw new Error('Set DATABASE_URL or connect a Postgres integration that provides DATABASE_POSTGRES_URL.');
+        }
         if (!process.env.GEMINI_API_KEY) throw new Error('GEMINI_API_KEY is required in production.');
         if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) throw new Error('Set a JWT_SECRET of at least 32 characters in production.');
       }
