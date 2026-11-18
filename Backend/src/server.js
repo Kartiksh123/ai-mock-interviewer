@@ -44,8 +44,21 @@ app.use(express.json({ limit: '1mb' }));
 
 let interviews = [];
 const interviewsBeingAnswered = new Set();
+let initialization;
 
-async function loadInterviews() { interviews = await store.initializeStore(); }
+async function ensureInitialized() {
+  if (!initialization) {
+    initialization = (async () => {
+      if (process.env.NODE_ENV === 'production') {
+        if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is required in production.');
+        if (!process.env.GEMINI_API_KEY) throw new Error('GEMINI_API_KEY is required in production.');
+        if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) throw new Error('Set a JWT_SECRET of at least 32 characters in production.');
+      }
+      interviews = await store.initializeStore();
+    })();
+  }
+  return initialization;
+}
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -159,6 +172,12 @@ app.get('/api/health', async (_req, res) => {
   } catch {
     res.status(503).json({ status: 'unavailable', service: 'ai-mock-interviewer-api', database: 'unavailable' });
   }
+});
+
+// Vercel imports the Express app without calling start(); initialize the store on
+// the first request in either serverless or long-running environments.
+app.use('/api', async (_req, _res, next) => {
+  try { await ensureInitialized(); next(); } catch (error) { next(error); }
 });
 
 const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 20, standardHeaders: 'draft-7', legacyHeaders: false });
@@ -449,12 +468,7 @@ app.use((error, _req, res, _next) => {
 });
 
 async function start() {
-  if (process.env.NODE_ENV === 'production') {
-    if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is required in production.');
-    if (!process.env.GEMINI_API_KEY) throw new Error('GEMINI_API_KEY is required in production.');
-    if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32) throw new Error('Set a JWT_SECRET of at least 32 characters in production.');
-  }
-  await loadInterviews();
+  await ensureInitialized();
   return app.listen(PORT, () => console.log(`AI Mock Interviewer API listening on http://localhost:${PORT}`));
 }
 
@@ -465,4 +479,8 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, start, requireAuth, askGemini };
+module.exports = app;
+module.exports.app = app;
+module.exports.start = start;
+module.exports.requireAuth = requireAuth;
+module.exports.askGemini = askGemini;
