@@ -2,6 +2,10 @@
 
 Adaptive interview practice with personalized questions, evidence-based scoring, skill analysis, recommendations, and session history.
 
+## Live demo
+
+Try Intervue at **[ai-mock-interviewer-eosin-tau.vercel.app](https://ai-mock-interviewer-eosin-tau.vercel.app)**. The app and API are deployed together on Vercel, with Postgres provided by Neon. AI-powered features require a valid `GEMINI_API_KEY` configured in the deployment environment.
+
 ## Start the whole app locally
 
 1. Install Docker Desktop.
