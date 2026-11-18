@@ -13,4 +13,4 @@ For non-Docker development, follow the setup notes in [Backend/README.md](./Back
 
 ## Deploy
 
-`render.yaml` defines the API, static frontend, and PostgreSQL service for a Render Blueprint. The frontend can also deploy to Vercel; configure `VITE_API_URL` and allow its origin in the backend’s `FRONTEND_ORIGIN` setting. Set secrets only in the hosting provider’s environment settings.
+Deploy the frontend and API to Vercel as two projects rooted at `Frontend` and `Backend`; connect a Postgres provider and configure `VITE_API_URL`, `FRONTEND_ORIGIN`, `DATABASE_URL`, `GEMINI_API_KEY`, and `JWT_SECRET` in the respective project settings. See the two app READMEs for exact setup steps. `render.yaml` is an alternate Render Blueprint, and `compose.yaml` runs the stack locally. Set secrets only in hosting-provider environment settings.

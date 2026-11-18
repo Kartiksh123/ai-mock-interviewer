@@ -45,6 +45,12 @@ All endpoints except health, register, and login require `Authorization: Bearer 
 
 ## Deployment
 
-The repository root has a Render Blueprint in `render.yaml` and a Docker Compose setup. Render prompts for `GEMINI_API_KEY`, generates the token secret, provisions PostgreSQL, and wires the API and static frontend services. Review the selected database plan in Render before creating resources. For Vercel, import the `Frontend` folder and set `VITE_API_URL` to the deployed API URL ending in `/api`; configure the API’s `FRONTEND_ORIGIN` to the deployed frontend origin.
+### Vercel API deployment
+
+Import this GitHub repository as a Vercel project with the root directory set to `Backend`. Vercel detects the Express app exported by `src/server.js`. Add a Postgres integration (such as Neon or Supabase), then set `GEMINI_API_KEY`, `JWT_SECRET` (at least 32 random characters), and `FRONTEND_ORIGIN` in the project's environment settings. Use the provider's `DATABASE_URL`; set `DATABASE_SSL=true` only if that provider requires it. The deployed API base URL ends with `/api`.
+
+Create a second Vercel project from the same repository with its root directory set to `Frontend`; set `VITE_API_URL` to the deployed API base URL. Set the API project's `FRONTEND_ORIGIN` to the frontend's production origin and redeploy the API. Vercel supports multiple projects connected to one monorepo. Review the Postgres provider's free-tier limits and billing terms before provisioning.
+
+The repository also includes a Render Blueprint in `render.yaml` and a Docker Compose setup for local deployment.
 
 Never commit `.env` files or API keys. Before a public launch, also configure custom domains/HTTPS, backups and data-retention policy for resumes and interview answers.

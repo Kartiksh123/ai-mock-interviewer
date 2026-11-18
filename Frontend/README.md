@@ -13,4 +13,4 @@ Use Node.js `^20.19.0` or `>=22.12.0` for Vite 8.
 
 For the full PostgreSQL-backed app, run `docker compose up --build` from the repository root and open `http://localhost:8080`. Set the Gemini key in `Backend/.env`; the browser never receives it.
 
-For Vercel, import this folder and set `VITE_API_URL` to the deployed backend URL ending in `/api`. Set the backend `FRONTEND_ORIGIN` to the frontend’s deployed origin.
+For Vercel, import the repository as a separate project with this folder as the root directory. Set `VITE_API_URL` to the deployed backend URL ending in `/api`, and set the backend `FRONTEND_ORIGIN` to this project's production origin. See `../Backend/README.md` for the API project setup.
