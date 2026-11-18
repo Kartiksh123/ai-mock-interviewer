@@ -45,11 +45,11 @@ All endpoints except health, register, and login require `Authorization: Bearer 
 
 ## Deployment
 
-### Vercel API deployment
+### Vercel deployment
 
-Import this GitHub repository as a Vercel project with the root directory set to `Backend`. Vercel detects the Express app exported by `src/server.js`. Add a Postgres integration (such as Neon or Supabase), then set `GEMINI_API_KEY`, `JWT_SECRET` (at least 32 random characters), and `FRONTEND_ORIGIN` in the project's environment settings. Use the provider's `DATABASE_URL`; set `DATABASE_SSL=true` only if that provider requires it. The deployed API base URL ends with `/api`.
+Import this repository as one Vercel project from its root. The root `vercel.json` configures the `Backend` Express app and `Frontend` Vite app as Vercel Services, routing `/api/*` to the backend and other paths to the frontend. The frontend uses the same-origin `/api` path in production, so no API URL needs to be embedded at build time.
 
-Create a second Vercel project from the same repository with its root directory set to `Frontend`; set `VITE_API_URL` to the deployed API base URL. Set the API project's `FRONTEND_ORIGIN` to the frontend's production origin and redeploy the API. Vercel supports multiple projects connected to one monorepo. Review the Postgres provider's free-tier limits and billing terms before provisioning.
+Connect a Postgres provider through the Vercel Marketplace (for example, Neon). Set `GEMINI_API_KEY` and a random `JWT_SECRET` of at least 32 characters in the project environment. Let the database integration provide `DATABASE_URL`; set `DATABASE_SSL=true` only if the provider requires it. Check provider billing and storage-retention terms before creating the database.
 
 The repository also includes a Render Blueprint in `render.yaml` and a Docker Compose setup for local deployment.
 

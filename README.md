@@ -13,4 +13,4 @@ For non-Docker development, follow the setup notes in [Backend/README.md](./Back
 
 ## Deploy
 
-Deploy the frontend and API to Vercel as two projects rooted at `Frontend` and `Backend`; connect a Postgres provider and configure `VITE_API_URL`, `FRONTEND_ORIGIN`, `DATABASE_URL`, `GEMINI_API_KEY`, and `JWT_SECRET` in the respective project settings. See the two app READMEs for exact setup steps. `render.yaml` is an alternate Render Blueprint, and `compose.yaml` runs the stack locally. Set secrets only in hosting-provider environment settings.
+Deploy the frontend and Express API together as one Vercel Services project using the root `vercel.json`; add a Postgres Marketplace integration and configure `GEMINI_API_KEY` and `JWT_SECRET`. See the [backend deployment guide](./Backend/README.md). `render.yaml` is an alternate Render Blueprint, and `compose.yaml` runs the stack locally. Set secrets only in hosting-provider environment settings.

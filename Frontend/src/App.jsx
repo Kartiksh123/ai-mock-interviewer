@@ -6,7 +6,8 @@ import {
   Plus, Send, Sparkles, Target, Upload, X,
 } from 'lucide-react';
 
-const API = (import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_HOST ? `https://${import.meta.env.VITE_API_HOST}/api` : 'http://localhost:3000/api')).replace(/\/$/, '');
+const DEFAULT_API = import.meta.env.PROD ? '/api' : 'http://localhost:3000/api';
+const API = (import.meta.env.VITE_API_URL || (import.meta.env.VITE_API_HOST ? `https://${import.meta.env.VITE_API_HOST}/api` : DEFAULT_API)).replace(/\/$/, '');
 const ROLES = [
   { name: 'Machine Learning Engineer', short: 'ML Engineer', icon: '◌', color: 'lavender' },
   { name: 'Python Developer', short: 'Python Developer', icon: '⌘', color: 'blue' },
